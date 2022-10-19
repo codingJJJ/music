@@ -55,56 +55,32 @@ const Player: FC<PlayerProps> = ({ next, pre, url }) => {
     [duration]
   );
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.palyer}>
         <audio ref={audioRef} src={src}>
           当前版本不支持该浏览器
         </audio>
-        <GiPreviousButton size={24} />
-        <div className={styles.playButtonWrap} onClick={play}>
+        {/* <GiPreviousButton size={24} /> */}
+        <span>上一曲</span>
+        {/* <div className={styles.playButtonWrap} onClick={play}>
           <GiPlayButton style={{ display: "inline-block" }} size={24} />
-        </div>
-
-        <GiNextButton size={24} />
-
-        <div className={styles.heartShape}></div>
-        <BiVolumeFull size={24} />
-        <TfiLoop size={24} />
-        <PlayerProcess
-          value={+currentTime / +duration}
-          onChange={onProgressChange}
-        />
-        {false && (
-          <p className={styles.progress}>
-            <input
-              ref={progressRef}
-              className={styles.range}
-              type="range"
-              width={1200}
-              onChange={rangeChange}
-              defaultValue={0}
-              // value={progress}
-            />
-            <span
-              className={styles.fill}
-              onMouseDown={() => {
-                isDrag.current = true;
-              }}
-              onMouseUp={() => {
-                // isDrag.current = false;
-              }}
-            ></span>
-            {/* <label className={styles.current}>0</label> */}
-          </p>
-        )}
+        </div> */}
+        <div onClick={play}>{playing ? "暂停" : "播放"}</div>
+        {/* <GiNextButton size={24} /> */}
+        <div>下一曲</div>
+        {/* <div className={styles.heartShape}></div> */}
+        <div className={styles.heartShape}>{playing ? "♥" : "♡"}</div>
+        {/* 
+        <TfiLoop size={24} /> */}
+        <PlayerProcess value={progress} onChange={onProgressChange} />
+        {/* <BiVolumeFull size={24} /> */}
+        <div>声音</div>
+        <div>循环</div>
         <span>
           {formatTime(currentTime)}/{formatTime(duration)}
         </span>
       </div>
-      <div>{currentTime}</div>
-      <div>{duration}</div>
-      <div>{(50 / 100) * audioRef.current?.duration}</div>
-    </>
+    </div>
   );
 };
 

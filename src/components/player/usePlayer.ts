@@ -47,7 +47,7 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
   const [playing, setPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.75);
   const [currentTime, setCurrentTime] = useState("0:00");
-  const [progress, setProgress] = useState<string>(0);
+  const [progress, setProgress] = useState<number>(0);
   useEffect(() => {
     audioRef.current!.addEventListener("playing", () => {
       setPlaying(true);
@@ -65,12 +65,15 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
     });
     audioRef.current!.addEventListener("timeupdate", (e) => {
       setCurrentTime(audioRef.current!.currentTime.toFixed(2));
-      setProgress(
-        (
+      const progress =
+        +(
           (audioRef.current!.currentTime / audioRef.current!.duration) *
           100
-        ).toFixed(0)
-      );
+        ).toFixed(0) || 0;
+      const formatProgress = isNaN(+progress) ? 0 : progress;
+      console.log({ formatProgress: formatProgress / 100 });
+
+      setProgress(formatProgress / 100);
     });
     window.a = audioRef.current;
   });

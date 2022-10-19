@@ -1,96 +1,58 @@
-.palyer {
-  display: flex;
-  height: 50px;
+.container {
   background-color: #a1999c;
-  align-items: center;
-  user-select: none;
-  .progress {
-    position: relative;
-    .range {
-      -webkit-appearance: none;
-      height: 20px;
-      width: 400px;
-      background-image: url("../img/recommend/slider.svg");
-      background-size: cover;
-      box-shadow: 0 6px 6px rgba(255,137,129,0.35);
-      border-radius: 24px;
-      border:none;
-    }
-    .fill {
-      position: absolute;
-      left:0;
-      top:3px;
-      width: 0;
-      height: 8px;
-      background: #FFA099;
-      border-radius: 100px 0 0 100px;
-    }
-    .current{
-      color: #F97D75;
-      font-size: 24px;
-      font-weight: bold;
-      position: absolute;
-      left:10px;
-      top:-30px;
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  .palyer {
+    display: flex;
+    min-width: 800px;
+    height: 100%;
+    align-items: center;
+    user-select: none;
+    .progress {
+      position: relative;
+      .range {
+        -webkit-appearance: none;
+        height: 20px;
+        width: 400px;
+        background-image: url("../img/recommend/slider.svg");
+        background-size: cover;
+        box-shadow: 0 6px 6px rgba(255,137,129,0.35);
+        border-radius: 24px;
+        border:none;
+      }
+      .fill {
+        position: absolute;
+        left:0;
+        top:3px;
+        width: 0;
+        height: 8px;
+        background: #FFA099;
+        border-radius: 100px 0 0 100px;
+      }
+      .current{
+        color: #F97D75;
+        font-size: 24px;
+        font-weight: bold;
+        position: absolute;
+        left:10px;
+        top:-30px;
+      }
     }
   }
-}
-.playButtonWrap {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #000;
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.heartShape:before,
-.heartShape:after {
-    position: absolute;
-    content: '';
-    width: 20px;
-    height: 20px;
-    background-color: #ffc0cb;
-}
-
-.heartShape:before {
-    left: -9px;
-}
-
-.heartShape:after {
-    top: -9px;
-}
-
-.heartShape {
-  margin: 0 10px;
-  position: relative;
-  width: 20px;
-  height: 20px;
-  background-color: #f70e0e;
-  -webkit-transform: rotate(45deg);
-  /* Safari 和 Chrome */
-  -moz-transform: rotate(45deg);
-  /* Firefox */
-  -ms-transform: rotate(45deg);
-  /* IE 9 */
-  -o-transform: rotate(45deg);
-  /* Opera */
-  transform: rotate(45deg);
-}
-
-.heartShape:before,
-.heartShape:after {
-    position: absolute;
-    content: '';
-    width: -9px;
-    height: -9px;
-    -webkit-border-radius: 50%;
-    /**兼容苹果；谷歌，等一些浏览器认*/
-    -moz-border-radius: 50%;
-    /**兼容火狐浏览器*/
-    -o-border-radius: 50%;
-    /**兼容opera浏览器*/
+  .playButtonWrap {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #000;
     border-radius: 50%;
-    background-color: #f70e0e;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .heartShape {
+    width: 60px;
+    text-align: center;
+    font-size: 24px;
+  }
+
 }

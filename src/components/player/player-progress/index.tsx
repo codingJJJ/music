@@ -1,7 +1,19 @@
-import React, { useEffect, useRef } from "react";
+import React, { type FC, useEffect, useRef } from "react";
 import styles from "./index.module.less";
 
-const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
+type PlayerProcessProps = {
+  defaultValue?: number;
+  value: number;
+  onChange?: (v: number) => void;
+  width: number;
+};
+
+const PlayerProcess: FC<PlayerProcessProps> = ({
+  defaultValue,
+  value = defaultValue || 0,
+  onChange,
+  width = 400,
+}) => {
   const thumbRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const isDrag = useRef<boolean>(false);
@@ -19,23 +31,19 @@ const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
 
   // event
   useEffect(() => {
-    // let isDrag = { current: false };
-    // let progress;
     const mousedown = (e: any) => {
-      console.log(e.target!.className);
-
       if (
         e.target!.className === styles.progress ||
         e.target!.className === styles.fill
       ) {
-        // console.log(progress);
         if (!isDrag.current) {
           fillRef.current!.style.width = e.offsetX + "px";
           thumbRef.current!.style.transform = `translate(${
             e.offsetX - 12
           }px, -4px)`;
-          console.log(e.offsetX / width);
-          onChange((e.offsetX / width) * 100);
+          if (typeof onChange === "function") {
+            onChange?.((e.offsetX / width) * 100);
+          }
         }
       } else if (
         e.target!.className === styles.thumb ||
@@ -66,24 +74,18 @@ const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
       if (isDrag.current && isDrag.current) {
         isDrag.current = false;
         if (typeof onChange === "function") {
-          console.log(memoProgress.current);
-
-          onChange(memoProgress.current);
+          onChange?.(memoProgress.current);
         }
-      } else if (e.target.className === styles.fill || styles.progress) {
-        // onChange(memoProgress.current);
       }
     };
-
-    progressRef.current?.addEventListener("mousedown", mousedown);
-
-    // thumbRef.current?.addEventListener("mousedown", mousedown);
-
-    document?.addEventListener("mousemove", mousemove);
-
-    // thumbRef.current?.addEventListener("mouse", mousemove);
-    document?.addEventListener("mouseup", mouseup);
-    return () => {};
+    progressRef.current!.addEventListener("mousedown", mousedown);
+    document.addEventListener("mousemove", mousemove);
+    document.addEventListener("mouseup", mouseup);
+    return () => {
+      progressRef.current!.removeEventListener("mousedown", mousedown);
+      document.removeEventListener("mousemove", mousemove);
+      document.removeEventListener("mouseup", mouseup);
+    };
   }, []);
 
   const onprogressClick = (e) => {
