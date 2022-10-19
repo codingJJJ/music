@@ -5,7 +5,7 @@ type PlayerProcessProps = {
   defaultValue?: number;
   value: number;
   onChange?: (v: number) => void;
-  width: number;
+  width?: number;
 };
 
 const PlayerProcess: FC<PlayerProcessProps> = ({
@@ -16,8 +16,10 @@ const PlayerProcess: FC<PlayerProcessProps> = ({
 }) => {
   const thumbRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
+  // 是否是拖动状态
   const isDrag = useRef<boolean>(false);
   const progressRef = useRef<HTMLDivElement>(null);
+  // 记录progress的值
   const memoProgress = useRef<number>(0);
 
   useEffect(() => {
@@ -29,34 +31,28 @@ const PlayerProcess: FC<PlayerProcessProps> = ({
     }
   }, [value]);
 
-  // event
+  // bind event
   useEffect(() => {
-    const mousedown = (e: any) => {
-      if (
-        e.target!.className === styles.progress ||
-        e.target!.className === styles.fill
-      ) {
+    const mousedown = (e: MouseEvent) => {
+      const isControlByprogress =
+        (e.target as HTMLDListElement).className === styles.progress ||
+        (e.target as HTMLDListElement).className === styles.fill;
+      const isControlBythumb =
+        (e.target as HTMLDListElement).className === styles.thumb ||
+        (e.target as HTMLDListElement).className === styles.inner;
+      if (isControlByprogress) {
         if (!isDrag.current) {
-          fillRef.current!.style.width = e.offsetX + "px";
-          thumbRef.current!.style.transform = `translate(${
-            e.offsetX - 12
-          }px, -4px)`;
-          if (typeof onChange === "function") {
-            onChange?.((e.offsetX / width) * 100);
-          }
+          setProgressStyle(fillRef.current!, thumbRef.current!, e.offsetX);
+          onChange?.((e.offsetX / width) * 100);
         }
-      } else if (
-        e.target!.className === styles.thumb ||
-        e.target!.className === styles.inner
-      ) {
+      } else if (isControlBythumb) {
         isDrag.current = true;
       }
     };
-    const mousemove = (e) => {
+    const mousemove = (e: MouseEvent) => {
       e.stopPropagation();
 
       if (isDrag.current) {
-        // console.log(e.clientX);
         memoProgress.current! = +(
           ((e.pageX - progressRef.current!.offsetLeft) / width) *
           100
@@ -65,49 +61,41 @@ const PlayerProcess: FC<PlayerProcessProps> = ({
           Math.min(e.pageX - progressRef.current!.offsetLeft, 400),
           0
         );
-        fillRef.current!.style.width = offset + "px";
-        thumbRef.current!.style.transform = `translate(${offset - 12}px, -4px)`;
+        setProgressStyle(fillRef.current!, thumbRef.current!, offset);
       }
     };
-    const mouseup = (e) => {
+    const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
       if (isDrag.current && isDrag.current) {
         isDrag.current = false;
-        if (typeof onChange === "function") {
-          onChange?.(memoProgress.current);
-        }
+        onChange?.(memoProgress.current);
       }
     };
+
     progressRef.current!.addEventListener("mousedown", mousedown);
     document.addEventListener("mousemove", mousemove);
     document.addEventListener("mouseup", mouseup);
     return () => {
+      // clean effects
       progressRef.current!.removeEventListener("mousedown", mousedown);
       document.removeEventListener("mousemove", mousemove);
       document.removeEventListener("mouseup", mouseup);
     };
   }, []);
 
-  const onprogressClick = (e) => {
-    // console.log(e.target.offsetX);
-    // if (e.target.className === styles.progress) {
-    //   console.log(e.screenX - e.clientX);
-    // }
+  const setProgressStyle = (
+    fillElement: HTMLDivElement,
+    thumbElement: HTMLDivElement,
+    offsetX: number
+  ) => {
+    fillElement.style.width = offsetX + "px";
+    thumbElement.style.transform = `translate(${offsetX - 12}px, -4px)`;
   };
 
   return (
-    <div
-      className={styles.progress}
-      style={{ width }}
-      onClick={onprogressClick}
-      ref={progressRef}
-    >
+    <div className={styles.progress} style={{ width }} ref={progressRef}>
       <div className={styles.fill} ref={fillRef}></div>
-      <div
-        ref={thumbRef}
-        className={styles.thumb}
-        style={{ transform: `translate(16px, -4px)` }}
-      >
+      <div ref={thumbRef} className={styles.thumb}>
         <div className={styles.inner}></div>
       </div>
     </div>

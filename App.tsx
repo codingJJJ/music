@@ -1,7 +1,4 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
 import Player from "./src/components/player";
 
 type AppProps = {
