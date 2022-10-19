@@ -9,12 +9,7 @@ const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
   const memoProgress = useRef<number>(0);
 
   useEffect(() => {
-    console.log(value);
-
     if (!isDrag.current) {
-      console.log(width, value, "px");
-      console.log(width * value - 12);
-
       fillRef.current!.style.width = width * value + "px";
       thumbRef.current!.style.transform = `translate(${
         width * value - 12
@@ -39,13 +34,14 @@ const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
           thumbRef.current!.style.transform = `translate(${
             e.offsetX - 12
           }px, -4px)`;
+          console.log(e.offsetX / width);
+          onChange((e.offsetX / width) * 100);
         }
       } else if (
         e.target!.className === styles.thumb ||
         e.target!.className === styles.inner
       ) {
         isDrag.current = true;
-        console.log("down");
       }
     };
     const mousemove = (e) => {
@@ -69,12 +65,13 @@ const PlayerProcess = ({ value, onChange, width = 400, wrapRef }) => {
       e.stopPropagation();
       if (isDrag.current && isDrag.current) {
         isDrag.current = false;
-        console.log("up");
         if (typeof onChange === "function") {
           console.log(memoProgress.current);
 
           onChange(memoProgress.current);
         }
+      } else if (e.target.className === styles.fill || styles.progress) {
+        // onChange(memoProgress.current);
       }
     };
 

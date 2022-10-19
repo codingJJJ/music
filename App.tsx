@@ -11,7 +11,7 @@ type AppProps = {
 };
 
 const App: React.FC<AppProps> = ({ pre, next }) => {
-  return <Player url="http://localhost:3000/日不落.mp3" />;
+  return <Player url="./public/didu.mp3" />;
 };
 
 export default App;

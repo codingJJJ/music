@@ -76,15 +76,13 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
   });
 
   const onCurrentTimeChange = (currentTime) => {
-    console.log({ currentTime });
-
     audioRef.current!.currentTime = currentTime;
+    setCurrentTime(currentTime);
   };
 
   const duration = useMemo(() => {
     return (audioRef.current?.duration || 0).toFixed(2);
   }, [url]);
-  console.log();
 
   return {
     playing,
@@ -96,8 +94,6 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
     currentTime,
     setCurrentTime: onCurrentTimeChange,
     get duration() {
-      console.log("duration", (audioRef.current?.duration || 0).toFixed(2));
-
       return (audioRef.current?.duration || 0).toFixed(2);
     },
     progress,

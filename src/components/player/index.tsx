@@ -35,7 +35,6 @@ const Player: FC<PlayerProps> = ({ next, pre, url }) => {
 
   const isDrag = useRef(false);
   const wrapRef = useRef<HTMLDivElement>(null);
-  window.sss = progressRef.current;
   // useEffect(() => {
   //   console.log(isDrag.current);
 
@@ -48,10 +47,6 @@ const Player: FC<PlayerProps> = ({ next, pre, url }) => {
   // }, [progress]);
   const onProgressChange = useCallback(
     (e: number) => {
-      console.log(e);
-      console.log(duration);
-
-      console.log((e / 100) * audioRef.current?.duration);
       const a = audioRef.current?.duration;
       duration;
       setCurrentTime((e / 100) * audioRef.current?.duration);
