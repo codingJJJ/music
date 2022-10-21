@@ -49,6 +49,7 @@ const PlayerProcess: FC<PlayerProcessProps> = ({
         isDrag.current = true;
       }
     };
+
     const mousemove = (e: MouseEvent) => {
       e.stopPropagation();
 
@@ -64,6 +65,7 @@ const PlayerProcess: FC<PlayerProcessProps> = ({
         setProgressStyle(fillRef.current!, thumbRef.current!, offset);
       }
     };
+
     const mouseup = (e: MouseEvent) => {
       e.stopPropagation();
       if (isDrag.current && isDrag.current) {

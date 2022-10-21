@@ -39,6 +39,11 @@ import { useMemo, useEffect, useState, useRef } from "react";
 // volumechange 当音量已更改时
 // waiting 当视频由于需要缓冲下一帧而停止
 
+/**
+ * 抽离核心的paler功能
+ * @param url 资源url
+ * @returns
+ */
 const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -89,9 +94,7 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
     src: url,
     currentTime,
     setCurrentTime: onCurrentTimeChange,
-    get duration() {
-      return (audioRef.current?.duration || 0).toFixed(2);
-    },
+    duration: (audioRef.current?.duration || 0).toFixed(2),
     progress,
     setProgress,
     play: () => {
