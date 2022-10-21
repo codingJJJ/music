@@ -1,7 +1,4 @@
-import React, { useMemo } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useRef } from "react";
+import { useMemo, useEffect, useState, useRef } from "react";
 
 // GiPreviousButton
 // GiNextButton
@@ -63,15 +60,12 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
     audioRef.current!.addEventListener("playing", () => {});
     audioRef.current!.addEventListener("timeupdate", (e) => {
       setCurrentTime(audioRef.current!.currentTime.toFixed(2));
-      const progress =
-        +(
-          (audioRef.current!.currentTime / audioRef.current!.duration) *
-          100
-        ).toFixed(0) || 0;
-      const formatProgress = isNaN(+progress) ? 0 : progress;
-      console.log({ formatProgress: formatProgress / 100 });
+      const progress = getProgress(
+        audioRef.current!.currentTime,
+        audioRef.current!.duration
+      );
 
-      setProgress(formatProgress / 100);
+      setProgress(progress);
     });
   });
 
@@ -80,9 +74,11 @@ const usePlayer = (url: string = "http://localhost:3000/日不落.mp3") => {
     setCurrentTime(currentTime);
   };
 
-  const duration = useMemo(() => {
-    return (audioRef.current?.duration || 0).toFixed(2);
-  }, [url]);
+  const getProgress = (currentTime: number, duration: number): number => {
+    const progress = +((currentTime / duration) * 100).toFixed(0) || 0;
+    const formatProgress = isNaN(+progress) ? 0 : progress;
+    return formatProgress / 100;
+  };
 
   return {
     playing,

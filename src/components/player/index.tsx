@@ -5,6 +5,13 @@ import styles from "./index.module.less";
 import PlayerProcess from "./player-progress";
 import { useCallback } from "react";
 import { formatTime } from "./utils";
+import { ReactComponent as Heart } from "../../../public/heart.svg";
+import { ReactComponent as PreviousIcon } from "../../../public/上一首.svg";
+import { ReactComponent as NextIcon } from "../../../public/下一首.svg";
+import { ReactComponent as LoopIcon } from "../../../public/循环播放.svg";
+import { ReactComponent as VolumeIcon } from "../../../public/喇叭.svg";
+import { ReactComponent as PlayIcon } from "../../../public/播放按钮.svg";
+
 type PlayerProps = {
   next?: () => void;
   pre?: () => void;
@@ -40,16 +47,34 @@ const Player: FC<PlayerProps> = ({ next, pre, url }) => {
         <audio ref={audioRef} src={src}>
           当前浏览器不支持该播放器
         </audio>
-        <span>上一曲</span>
-        <div onClick={play}>{playing ? "暂停" : "播放"}</div>
-        <div>下一曲</div>
-        <div className={styles.heartShape}>{playing ? "♥" : "♡"}</div>
-        <PlayerProcess value={progress} onChange={onProgressChange} />
-        <div>声音</div>
-        <div>循环</div>
-        <span>
+        <PreviousIcon width={18} height={18} />
+        <div onClick={play} className={styles.playButton}>
+          {playing ? (
+            <PlayIcon width={22} height={22} />
+          ) : (
+            <PlayIcon width={22} height={22} />
+          )}
+        </div>
+        <NextIcon width={18} height={18} />
+        {/* {playing ? "♥" : "♡"} */}
+        <Heart className={styles.heart} width={18} height={18} />
+        <div className={styles.info}>
+          <div className={styles.headimg}></div>
+          <div>
+            <div className={styles.title}>
+              <span>歌曲名</span>
+              <b>Up: 创作者</b>
+            </div>
+            <PlayerProcess value={progress} onChange={onProgressChange} />
+          </div>
+        </div>
+
+        <VolumeIcon width={18} height={18} />
+        <input type="range" color="red" style={{ margin: "0 2px" }} />
+        <LoopIcon className={styles.loop} width={18} height={18} />
+        {/* <span>
           {formatTime(currentTime)}/{formatTime(duration)}
-        </span>
+        </span> */}
       </div>
     </div>
   );
